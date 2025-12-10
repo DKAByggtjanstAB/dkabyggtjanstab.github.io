@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Genomförda projekt on DKA Byggtjänst AB</title>
-    <link>https://example.org/genomforda-projekt/</link>
+    <link>https://www.dkabyggtjanst.se/genomforda-projekt/</link>
     <description>Recent content in Genomförda projekt on DKA Byggtjänst AB</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="https://example.org/genomforda-projekt/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://www.dkabyggtjanst.se/genomforda-projekt/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
