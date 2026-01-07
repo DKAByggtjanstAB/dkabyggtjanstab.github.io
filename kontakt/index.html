@@ -74,23 +74,21 @@
       </div>
     </div>
     <div class="row g-4">
-      <!-- Kontaktuppgifter -->
       <div class="col-md-4">
-        <div class="p-4 bg-dark rounded shadow-sm h-100">
+        <div class="p-4 bg-dark text-white rounded shadow-sm h-100">
           <h5>Adress</h5>
           <p>Rud Lilla Ängbacka 1<br>671 91 Arvika</p>
           <h5>Telefon</h5>
-          <p><a href="tel:+46738274343">073-827 43 43</a></p>
+          <p><a href="tel:+46738274343" class="text-white">073-827 43 43</a></p>
           <h5>E-post</h5>
-          <p><a href="mailto:daniel@dkabyggtjanst.se">daniel@dkabyggtjanst.se</a></p>
+          <p><a href="mailto:daniel@dkabyggtjanst.se" class="text-white">daniel@dkabyggtjanst.se</a></p>
           <h5>Öppettider</h5>
           <p>Vardagar: 07:00 – 16:00<br>Helger: Stängt</p>
         </div>
       </div>
-      <!-- Kontaktformulär -->
       <div class="col-md-8">
-        <div class="p-4 bg-dark rounded shadow-sm">
-          <form method="post" action="https://formspree.io/f/YOUR_FORM_ID">
+        <div class="p-4 bg-dark text-white rounded shadow-sm">
+          <form id="my-form" action="https://formspree.io/f/xykzrkqy" method="POST">
             <div class="mb-3">
               <label for="name" class="form-label">Namn</label>
               <input type="text" class="form-control" id="name" name="name" required>
@@ -103,25 +101,72 @@
               <label for="message" class="form-label">Meddelande</label>
               <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn btn-secondary">Skicka meddelande</button>
+            <button id="my-form-button" type="submit" class="btn btn-primary w-100">Skicka meddelande</button>
+            <div id="my-form-status" class="mt-3"></div>
           </form>
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- Karta -->
 <section class="py-5">
   <div class="container">
     <h2 class="text-center mb-4">Hitta oss</h2>
     <div class="ratio ratio-16x9">
       <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d1659.8714841699323!2d12.55768922409072!3d59.68504691602278!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sLilla%20%C3%84ngbacka%201%2C%20671%2091%20Arvika!5e1!3m2!1ssv!2sse!4v1764278531196!5m2!1ssv!2sse" 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2035.4524419514787!2d12.6517618!3d59.6200236!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4643916999333333%3A0x123456789abcdef!2sRud%20Lilla%20%C3%84ngbacka%201%2C%20671%2091%20Arvika!5e0!3m2!1ssv!2sse!4v1625000000000" 
         style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 </section>
+<script>
+  var form = document.getElementById("my-form");
+  
+  async function handleSubmit(event) {
+    event.preventDefault();
+    var status = document.getElementById("my-form-status");
+    var button = document.getElementById("my-form-button");
+    var data = new FormData(event.target);
+    
+    // Sätt knappen till "Skickar..." under processen
+    button.disabled = true;
+    button.innerHTML = "Skickar...";
 
+    fetch(event.target.action, {
+      method: form.method,
+      body: data,
+      headers: {
+          'Accept': 'application/json'
+      }
+    }).then(response => {
+      button.disabled = false;
+      button.innerHTML = "Skicka meddelande";
+      
+      if (response.ok) {
+        status.innerHTML = `
+          <div class="alert alert-success d-flex align-items-center" role="alert">
+            <div>
+              <i class="bi bi-check-circle-fill me-2"></i> Tack! Vi har tagit emot ditt meddelande och återkommer så snart vi kan.
+            </div>
+          </div>`;
+        form.reset();
+      } else {
+        response.json().then(data => {
+          if (Object.hasOwn(data, 'errors')) {
+            status.innerHTML = data["errors"].map(error => `<div class="alert alert-danger">${error["message"]}</div>`).join("");
+          } else {
+            status.innerHTML = '<div class="alert alert-danger">Hoppsan! Ett fel uppstod. Försök igen lite senare.</div>';
+          }
+        })
+      }
+    }).catch(error => {
+      button.disabled = false;
+      button.innerHTML = "Skicka meddelande";
+      status.innerHTML = '<div class="alert alert-danger">Hoppsan! Det gick inte att skicka formuläret. Kontrollera din internetanslutning.</div>';
+    });
+  }
+  form.addEventListener("submit", handleSubmit)
+</script>
   </div>
 </article>
 
@@ -166,7 +211,7 @@
     <hr class="border-light">
 
     <div class="text-center small">
-      &copy; 2025 DKA Byggtjänst AB. Alla rättigheter reserverade.
+      &copy; 2026 DKA Byggtjänst AB. Alla rättigheter reserverade.
     </div>
   </div>
 </footer>
